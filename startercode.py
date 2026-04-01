@@ -1,14 +1,14 @@
 # SI 201 HW6 (APIs, JSON, and Caching)
-# Your name:
-# Your student id:
-# Your email:
-# Who or what you worked with on this homework (including generative AI like ChatGPT):
-# If you worked with generative AI also add a statement for how you used it.
+# Your name: Hally Levine 
+# Your student id: 7678 3278
+# Your email: hally@umich.edu
+# Who or what you worked with on this homework (including generative AI like ChatGPT): ChatGPT
+# If you worked with generative AI also add a statement for how you used it. 
+# Used ChatGBT to help debug sections of my code when it gave me wrong outputs/didn't output anything.
 # e.g.:
 # Asked ChatGPT for help debugging and understanding the JSON structure
-#
 # Did your use of GenAI on this assignment align with your goals and guidelines in your Gen AI contract? If not, why?
-#
+# Yes, my use of GenAI aligned with my goals in my GenAI contract because I didn't have it write the code for me, I just used it to help me debug.
 # --- ARGUMENTS & EXPECTED RETURN VALUES PROVIDED --- #
 # --- SEE INSTRUCTIONS FOR FULL DETAILS ON METHOD IMPLEMENTATION --- #
 
@@ -35,7 +35,17 @@ def load_json(filename):
     RETURNS:
         A dictionary with the JSON data, OR an empty dictionary {} if the file
         cannot be opened or is not valid JSON.
-    """
+    """ 
+
+    try: 
+        f = open(filename, 'r', encoding = 'utf-8')
+        contents = f.read()
+        f.close()
+        return json.loads(contents)
+    except: 
+        return {}
+
+
     pass
 
 
