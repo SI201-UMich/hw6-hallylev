@@ -60,7 +60,10 @@ def create_cache(dictionary, filename):
 
     RETURNS:
         None
-    """
+    """ 
+    with open(filename, 'w', encoding = 'utf-8') as f: 
+        f.write(json.dumps(dictionary, indent = 2))
+    
     pass
 
 
@@ -79,7 +82,7 @@ def search_breed(breed_id):
         request failed or the response does not represent a successful breed lookup.
     """
     pass
-
+    
 
 def update_cache(breed_ids, cache_file):
     """
