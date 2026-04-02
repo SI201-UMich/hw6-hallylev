@@ -141,12 +141,16 @@ def get_longest_lifespan_breed(cache_file):
     cache = load_json(cache_file)
     best_name = None 
     max_lifespan_integer = None 
-    for url, entry in cache.items():
+
+    for url in cache:
+        entry = cache[url]
         try:
             attributes = entry["data"]["attributes"]
             name = attributes["name"]
             max_life = attributes["life"]["max"]
             if max_life is None:
+                continue 
+            if type(max_life) == str: #needed help
                 continue
             if max_lifespan_integer is None or max_life > max_lifespan_integer or (max_life == max_lifespan_integer and name < best_name):
                 best_name = name 
@@ -221,7 +225,47 @@ def recommend_breeds_in_same_group(breed_name, cache_file):
             "'{breed_name}' is not in the cache."  (name not found)
             "No group information available for '{breed_name}'."  (no group id)
             "No recommendations found based on '{breed_name}'."  (no other breeds in that group)
-    """
+    """ 
+    cache = load_json(cache_file)
+    if len(cache) == 0:
+        return "No breed data found in cache."
+    
+    target_group_id = None 
+    found = False 
+    for url in cache:
+        entry = cache[url]
+        try:
+            name = entry["data"]["attributes"]["name"]
+            if name.lower() == breed_name.lower():
+                found = True
+                try:
+                    target_group_id = entry["data"]["relationships"]["group"]["data"]["id"]
+                except (KeyError, TypeError):
+                    target_group_id = None 
+                break
+        except:
+            continue 
+    if not found:
+        return f"'{breed_name}' is not in the cache."
+    if target_group_id is None:
+        return f"No group information available for '{breed_name}'." 
+    
+    reccomendations = []
+    for url in cache:
+        entry = cache[url]
+        try:
+            name = entry["data"]["attributes"]["name"]
+            group_id = entry["data"]["relationships"]["group"]["data"]["id"]
+            if group_id == target_group_id and name.lower() != breed_name.lower():
+                reccomendations.append(name)
+        except (KeyError, TypeError): #got help
+            continue
+    
+    if len(reccomendations) == 0:
+        return f"No recommendations found based on '{breed_name}'."
+    
+    reccomendations.sort()
+    return reccomendations
 
 
 class TestHomeworkDogAPI(unittest.TestCase):
@@ -446,7 +490,7 @@ class TestHomeworkDogAPI(unittest.TestCase):
     # -------------------------
     # extra credit - uncomment tests below to evaluate extra credit function
     # -------------------------
-    """
+    
     def test_recommend_breeds_in_same_group_empty_cache(self):
         create_cache({}, self.test_cache_file)
         self.assertEqual(
@@ -551,7 +595,7 @@ class TestHomeworkDogAPI(unittest.TestCase):
             recommend_breeds_in_same_group("breed a", self.test_cache_file),
             ["Breed B", "Breed Z"],
         )
-    """
+    
 
 
 if __name__ == "__main__":
