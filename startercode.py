@@ -151,7 +151,7 @@ def get_longest_lifespan_breed(cache_file):
             if max_lifespan_integer is None or max_life > max_lifespan_integer or (max_life == max_lifespan_integer and name < best_name):
                 best_name = name 
                 max_lifespan_integer = max_life
-        except (KeyError, TypeError):
+        except (KeyError, TypeError): #got help with this part
             continue
     if best_name is None:
         return "No breeds found"
@@ -175,7 +175,29 @@ def get_groups_above_cutoff(cutoff, cache_file):
 
     RETURNS:
         A dictionary {group_uuid: count} for groups with count >= cutoff only.
-    """
+    """ 
+    cache = load_json(cache_file)
+    group_counts = {}
+    for url in cache:
+        entry = cache[url]
+        try: 
+            relationships = entry["data"]["relationships"]
+            group = relationships["group"]
+            group_data = group["data"]
+            group_id = group_data["id"]            
+            if group_id is None:
+                continue 
+            if group_id not in group_counts:
+                group_counts[group_id] = 0
+            group_counts[group_id] += 1
+        except (KeyError, TypeError): #needed help debugging this section with GenAI because it kept failing the tests
+            continue
+    result = {}
+    for group_id in group_counts:
+        if group_counts[group_id] >= cutoff:
+            result[group_id] = group_counts[group_id]
+    return result 
+
     pass
 
 
