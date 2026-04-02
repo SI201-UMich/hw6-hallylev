@@ -8,7 +8,7 @@
 # e.g.:
 # Asked ChatGPT for help debugging and understanding the JSON structure
 # Did your use of GenAI on this assignment align with your goals and guidelines in your Gen AI contract? If not, why?
-# Yes, my use of GenAI aligned with my goals in my GenAI contract because I didn't have it write the code for me, I just used it to help me debug.
+# Yes, my use of GenAI aligned with my goals in my GenAI contract because I didn't have it write the code for me, I just used it to help me debug. Mostly, it helped me with the "except" part of my code because I kept getting errors. 
 # --- ARGUMENTS & EXPECTED RETURN VALUES PROVIDED --- #
 # --- SEE INSTRUCTIONS FOR FULL DETAILS ON METHOD IMPLEMENTATION --- #
 
